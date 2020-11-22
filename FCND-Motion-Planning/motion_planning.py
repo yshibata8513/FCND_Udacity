@@ -165,24 +165,25 @@ class MotionPlanning(Drone):
         grid_goal = (grid_start[0] + 100,grid_start[1] + 100)
 
         ## Activate this part when you want to specify goal position using latlon.  
-        lon_goal = lon0 + 0.0002
-        lat_goal = lat0 + 0.0008
+        lon_goal = self.global_position[0] + 0.001
+        lat_goal = self.global_position[1] + 0.001
         print(lon_goal,lat_goal,lon0,lat0)
-        _grid_goal = global_to_local((lon_goal,lat_goal,0.0), (lon0,lat0,0.0))
-        grid_goal = ( int(_grid_goal[0]) , int(_grid_goal[1]) )
+        _grid_goal = global_to_local((lon_goal,lat_goal,TARGET_ALTITUDE),self.global_home)
+        grid_goal = ( int(_grid_goal[0]-north_offset) , int(_grid_goal[1]-east_offset) )
         print("grid_goal: {}".format(grid_goal))
 
         while(1):
           if grid[grid_goal[0],grid_goal[1]] == 0:
             break
           else:  
-            grid_goal = (grid_goal[0] -1 , grid_goal[1] - 1)
+            grid_goal = (grid_goal[0] + 1 , grid_goal[1] + 1)
 	
         # TODO: adapt to set goal as latitude / longitude position and convert
         # Run A* to find a path from start to goal
         # TODO: add diagonal motions with a cost of sqrt(2) to your A* implementation
         # or move to a different search space such as a graph (not done here)
         print('Local Start and Goal: ', grid_start, grid_goal)
+     
         path, _ = _a_star(grid, heuristic, grid_start, grid_goal)
         path = prune_pathpoints(path)
         # TODO: prune path to minimize number of waypoints
@@ -195,7 +196,7 @@ class MotionPlanning(Drone):
         print(waypoints)
         # TODO: send waypoints to sim (this is just for visualization of waypoints)
         self.send_waypoints()
-
+       
     def start(self):
         self.start_log("Logs", "NavL.txt")
 
