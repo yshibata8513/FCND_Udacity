@@ -159,20 +159,26 @@ class MotionPlanning(Drone):
 
         print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
         # Define starting point on the grid (this is just grid center)
-        #grid_start = (local_position, -east_offset)
         # TODO: convert start  to current position rather than map center
         grid_start = (int(_local_position[0]-north_offset), int(_local_position[1]-east_offset))
         # Set goal as some arbitrary position on the grid
-        #grid_goal = (north_offset + 75, -east_offset + 130)
-        grid_goal =   (grid_start[0]+100,grid_start[1]+100)
+        grid_goal = (grid_start[0] + 100,grid_start[1] + 100)
+
+        ## Activate this part when you want to specify goal position using latlon.  
+        lon_goal = lon0 + 0.0002
+        lat_goal = lat0 + 0.0008
+        print(lon_goal,lat_goal,lon0,lat0)
+        _grid_goal = global_to_local((lon_goal,lat_goal,0.0), (lon0,lat0,0.0))
+        grid_goal = ( int(_grid_goal[0]) , int(_grid_goal[1]) )
+        print("grid_goal: {}".format(grid_goal))
+
         while(1):
-          if grid[grid_goal[0],grid_goal[1]]==0:
+          if grid[grid_goal[0],grid_goal[1]] == 0:
             break
           else:  
-            grid_goal = (grid_goal[0] -1 , grid_goal[1]-1)
+            grid_goal = (grid_goal[0] -1 , grid_goal[1] - 1)
 	
         # TODO: adapt to set goal as latitude / longitude position and convert
-        #grid_goal = (-east_offset + 10, north_offset + 10)
         # Run A* to find a path from start to goal
         # TODO: add diagonal motions with a cost of sqrt(2) to your A* implementation
         # or move to a different search space such as a graph (not done here)
