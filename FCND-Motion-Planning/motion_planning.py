@@ -10,7 +10,7 @@ import numpy as np
 import sys
 sys.path.append("../")
 
-from planning_utils import a_star, heuristic, create_grid,_a_star,prune_pathpoints
+from planning_utils import  heuristic, create_grid,_a_star,prune_pathpoints
 #from planning_utils import *
 from udacidrone import Drone
 from udacidrone.connection import MavlinkConnection
