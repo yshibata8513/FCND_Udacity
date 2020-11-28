@@ -121,7 +121,7 @@ First I added members of <code>Action</code> corresponding to diagonal motions a
     SOUTH_WEST = (-1, -1, np.sqrt(2))
 
 </code>
-Second I add codes to <code>valid_actions</code> to judge whether each diagonal direction is valid.For example I judge <code>NORTH_EAST</code> is valid if and only if <code>EAST</code> and <code>NORTH</code> are both valid.
+Second I add codes to <code>valid_actions</code> to judge whether each diagonal direction is valid.For example I judge <code>NORTH_EAST</code> is valid if and only if <code>EAST</code> and <code>NORTH</code> are both valid and the cell to be moved is not in a obstacle.
 
 <code>
 
