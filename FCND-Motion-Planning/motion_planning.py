@@ -159,7 +159,7 @@ class MotionPlanning(Drone):
         # convert start  to current position rather than map center
         grid_start = (int(_local_position[0]-north_offset), int(_local_position[1]-east_offset))
         # Set goal as some arbitrary position on the grid
-        grid_goal = (grid_start[0] + 100,grid_start[1] + 100)
+        #grid_goal = (grid_start[0] + 100,grid_start[1] + 100)
 
         ## Activate this part when you want to specify goal position using latlon.  
         # If you want to set the goal position to another latlon ,please modify following two lines
