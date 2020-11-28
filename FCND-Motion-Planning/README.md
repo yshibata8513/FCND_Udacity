@@ -1,88 +1,182 @@
-# FCND - 3D Motion Planning
+## Project: 3D Motion Planning
 ![Quad Image](./misc/enroute.png)
 
+---
 
 
-This project is a continuation of the Backyard Flyer project where you executed a simple square shaped flight path. In this project you will integrate the techniques that you have learned throughout the last several lessons to plan a path through an urban environment. Check out the [project rubric](https://review.udacity.com/#!/rubrics/1534/view) for more detail on what constitutes a passing submission.
+# Required Steps for a Passing Submission:
+1. Load the 2.5D map in the colliders.csv file describing the environment.
+2. Discretize the environment into a grid or graph representation.
+3. Define the start and goal locations.
+4. Perform a search using A* or other search algorithm.
+5. Use a collinearity test or ray tracing method (like Bresenham) to remove unnecessary waypoints.
+6. Return waypoints in local ECEF coordinates (format for `self.all_waypoints` is [N, E, altitude, heading], where the drone’s start location corresponds to [0, 0, 0, 0].
+7. Write it up.
+8. Congratulations!  Your Done!
 
-## Option to do this project in a GPU backed virtual machine in the Udacity classroom!
-Rather than downloading the simulator and starter files you can simply complete this project in a virual workspace in the Udacity classroom! Follow [these instructions](https://classroom.udacity.com/nanodegrees/nd787/parts/5aa0a956-4418-4a41-846f-cb7ea63349b3/modules/0c12632a-b59a-41c1-9694-2b3508f47ce7/lessons/5f628104-5857-4a3f-93f0-d8a53fe6a8fd/concepts/ab09b378-f85f-49f4-8845-d59025dd8a8e?contentVersion=1.0.0&contentLocale=en-us) to proceed with the VM. 
+## [Rubric](https://review.udacity.com/#!/rubrics/1534/view) Points
+### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
-## To complete this project on your local machine, follow these instructions:
-### Step 1: Download the Simulator
-This is a new simulator environment!  
+---
 
-Download the Motion-Planning simulator for this project that's appropriate for your operating system from the [simulator releases respository](https://github.com/udacity/FCND-Simulator-Releases/releases).
 
-### Step 2: Set up your Python Environment
-If you haven't already, set up your Python environment and get all the relevant packages installed using Anaconda following instructions in [this repository](https://github.com/udacity/FCND-Term1-Starter-Kit)
+ Below I describe how I addressed each rubric point and where in my code each point is handled.
 
-### Step 3: Clone this Repository
-```sh
-git clone https://github.com/udacity/FCND-Motion-Planning
-```
-### Step 4: Test setup
-The first task in this project is to test the [solution code](https://github.com/udacity/FCND-Motion-Planning/blob/master/backyard_flyer_solution.py) for the Backyard Flyer project in this new simulator. Verify that your Backyard Flyer solution code works as expected and your drone can perform the square flight path in the new simulator. To do this, start the simulator and run the [`backyard_flyer_solution.py`](https://github.com/udacity/FCND-Motion-Planning/blob/master/backyard_flyer_solution.py) script.
+### Explain the Starter Code
 
-```sh
-source activate fcnd # if you haven't already sourced your Python environment, do so now.
-python backyard_flyer_solution.py
-```
-The quad should take off, fly a square pattern and land, just as in the previous project. If everything functions as expected then you are ready to start work on this project. 
+#### 1. Explain the functionality of what's provided in `motion_planning.py` and `planning_utils.py`
+<code>motion_planning.py</code>  
+I explain only <code>plan_path()</code>. This function has three roles: first, to read the list of obstacle locations from a csv file and create a grid map; second, to set the start and goal locations; and third, to create a route with the A-star algorithm.
 
-### Step 5: Inspect the relevant files
-For this project, you are provided with two scripts, `motion_planning.py` and `planning_utils.py`. Here you'll also find a file called `colliders.csv`, which contains the 2.5D map of the simulator environment. 
 
-### Step 6: Explain what's going on in  `motion_planning.py` and `planning_utils.py`
+<code>planning_utils.py</code> consists of following two functions and helper two data structures.I explain two functions as follow.
 
-`motion_planning.py` is basically a modified version of `backyard_flyer.py` that leverages some extra functions in `planning_utils.py`. It should work right out of the box.  Try running `motion_planning.py` to see what it does. To do this, first start up the simulator, then at the command line:
- 
-```sh
-source activate fcnd # if you haven't already sourced your Python environment, do so now.
-python motion_planning.py
-```
+1. <code>create_grid(data, drone_altitude, safety_distance)</code>  
+This function creates a two-dimensional grid from the given data. The size of the grid is determined by the position of obstacles and safety_distance. The size of each cell in the grid is one meter in height and width. Each cell is assigned a value of 1 if it is within safety_distance of the obstacle, 0 otherwise. The distance from the obstacle is calculated for a given drone_altitude.
 
-You should see the quad fly a jerky path of waypoints to the northeast for about 10 m then land.  What's going on here? Your first task in this project is to explain what's different about `motion_planning.py` from the `backyard_flyer_solution.py` script, and how the functions provided in `planning_utils.py` work. 
+2. <code>a_star(grid, h, start, goal)</code>  
+This function implements A* algorithm. In which, the nodes of the graph consist of each cell in the grid, and edges are defined between spatially adjacent cells. The cost of the edges are all set to one. Also, the heuristic function is defined as the linear distance between cell and goal.
 
-### Step 7: Write your planner
 
-Your planning algorithm is going to look something like the following:
 
-- Load the 2.5D map in the `colliders.csv` file describing the environment.
-- Discretize the environment into a grid or graph representation.
-- Define the start and goal locations. You can determine your home location from `self._latitude` and `self._longitude`. 
-- Perform a search using A* or other search algorithm. 
-- Use a collinearity test or ray tracing method (like Bresenham) to remove unnecessary waypoints.
-- Return waypoints in local ECEF coordinates (format for `self.all_waypoints` is [N, E, altitude, heading], where the drone’s start location corresponds to [0, 0, 0, 0]). 
+### Implementing Your Path Planning Algorithm
 
-Some of these steps are already implemented for you and some you need to modify or implement yourself.  See the [rubric](https://review.udacity.com/#!/rubrics/1534/view) for specifics on what you need to modify or implement.
+#### 1. Set your global home position
+I added a few lines of code to load the first line of the csv file , as shown below.
 
-### Step 8: Write it up!
-When you're finished, complete a detailed writeup of your solution and discuss how you addressed each step. You can use the [`writeup_template.md`](./writeup_template.md) provided here or choose a different format, just be sure to describe clearly the steps you took and code you used to address each point in the [rubric](https://review.udacity.com/#!/rubrics/1534/view). And have fun!
+<code> 
 
-## Extra Challenges
-The submission requirements for this project are laid out in the rubric, but if you feel inspired to take your project above and beyond, or maybe even keep working on it after you submit, then here are some suggestions for interesting things to try.
+    # read lat0, lon0 from colliders into floating point values
+    def extract_lonlat(filename):
+        with open(filename,"r") as f:
+            for row in f:
+                break
+        (lat_part,lon_part) = row.split(",")
+        lat = float(lat_part.split(" ")[1])
+        lon = float(lon_part.split(" ")[2])
+        return lon,lat
+    (lon0,lat0) = extract_lonlat(filename = 'colliders.csv')
+    # set home position to (lon0, lat0, 0)
+    self.set_home_position(lon0, lat0, 0.0)
+        
+</code>
 
-### Try flying more complex trajectories
-In this project, things are set up nicely to fly right-angled trajectories, where you ascend to a particular altitude, fly a path at that fixed altitude, then land vertically. However, you have the capability to send 3D waypoints and in principle you could fly any trajectory you like. Rather than simply setting a target altitude, try sending altitude with each waypoint and set your goal location on top of a building!
 
-### Adjust your deadbands
-Adjust the size of the deadbands around your waypoints, and even try making deadbands a function of velocity. To do this, you can simply modify the logic in the `local_position_callback()` function.
+#### 2. Set your current local position
+I used <code>global_to_local</code> to convert current global position to local position based on home position in at previous step.
 
-### Add heading commands to your waypoints
-This is a recent update! Make sure you have the [latest version of the simulator](https://github.com/udacity/FCND-Simulator-Releases/releases). In the default setup, you're sending waypoints made up of NED position and heading with heading set to 0 in the default setup. Try passing a unique heading with each waypoint. If, for example, you want to send a heading to point to the next waypoint, it might look like this:
+<code>
 
-```python
-# Define two waypoints with heading = 0 for both
-wp1 = [n1, e1, a1, 0]
-wp2 = [n2, e2, a2, 0]
-# Set heading of wp2 based on relative position to wp1
-wp2[3] = np.arctan2((wp2[1]-wp1[1]), (wp2[0]-wp1[0]))
-```
+    # convert to current local position using global_to_local()
+    _local_position = global_to_local(self.global_position, (lon0,lat0,0.0))        
+</code>
 
-This may not be completely intuitive, but this will yield a yaw angle that is positive counterclockwise about a z-axis (down) axis that points downward.
 
-Put all of these together and make up your own crazy paths to fly! Can you fly a double helix?? 
-![Double Helix](./misc/double_helix.gif)
+#### 3. Set grid start position from local position
+I identified the indices of home position in the grid as <code> (-north_offset,-east_offset) </code> and added this to <code>local_position</code> to compute the indices of <code>local_position</code> in the grid. Finally I set the indices as <code> grid_start</code>.
 
-Ok flying a double helix might seem like a silly idea, but imagine you are an autonomous first responder vehicle. You need to first fly to a particular building or location, then fly a reconnaissance pattern to survey the scene! Give it a try!
+<code>
+
+    # Define a grid for a particular altitude and safety margin around obstacles
+    grid, north_offset, east_offset = create_grid(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
+
+    print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
+    # Define starting point on the grid (this is just grid center)
+    # convert start  to current position rather than map center
+    grid_start = (int(_local_position[0]-north_offset), int(_local_position[1]-east_offset))
+</code>
+
+
+#### 4. Set grid goal position from geodetic coords
+First I set latlon of <code>goal</code>position.Second I calculated the indices of <code>goal_position</code> in the grid following same procedure as <code>local_position</code>.Finally I added a simple correction procedure of <code>goal_positon</code> to avoid to set <code>goal_position</code> in obstacles.
+
+<code>
+
+    ## Activate this part when you want to specify goal position using latlon.  
+    ## If you want to set the goal position to another latlon ,please modify following two lines
+    lon_goal = self.global_position[0] + 0.001
+    lat_goal = self.global_position[1] + 0.001
+    _grid_goal = global_to_local((lon_goal,lat_goal,TARGET_ALTITUDE),self.global_home)
+    grid_goal = ( int(_grid_goal[0]-north_offset) , int(_grid_goal[1]-east_offset) )
+    while(1):
+        if grid[grid_goal[0],grid_goal[1]] == 0:
+            break
+        else:  
+            grid_goal = (grid_goal[0] - 1 , grid_goal[1] - 1)
+    print("grid_goal: {}".format(grid_goal))
+
+</code>
+
+
+#### 5. Modify A* to include diagonal motion (or replace A* altogether)
+I updated the A* implementation to include diagonal motions on the grid that have a cost of sqrt(2).
+
+First I added members of <code>Action</code> corresponding to diagonal motions as follow. 
+
+<code>
+
+    NORTH_EAST = (1, 1, np.sqrt(2))
+    NORTH_WEST = (-1, 1, np.sqrt(2))
+    SOUTH_EAST = (1, -1, np.sqrt(2))
+    SOUTH_WEST = (-1, -1, np.sqrt(2))
+
+</code>
+Second I add codes to <code>valid_actions</code> to judge whether each diagonal direction is valid.For example I judge <code>NORTH_EAST</code> is valid if and only if <code>EAST</code> and <code>NORTH</code> are both valid.
+
+<code>
+
+    ## Neast(Nnorth,Nsouth,Nwest) means  
+    ## "valid_actions does not include Action.East(Nort,South,West)"
+    if Neast or Nnorth or grid[x + 1, y + 1] == 1:
+        valid_actions.remove(_Action.NORTH_EAST)
+    if Nwest or Nnorth or grid[x - 1, y + 1] == 1:
+        valid_actions.remove(_Action.NORTH_WEST)
+    if Neast or Nsouth or grid[x + 1, y - 1] == 1:
+        valid_actions.remove(_Action.SOUTH_EAST)
+    if Nwest or Nsouth or grid[x - 1, y - 1] == 1:
+        valid_actions.remove(_Action.SOUTH_WEST)
+</code>
+
+
+#### 6. Cull waypoints 
+To decide which points I should eliminates, I used the colliniarity check method as implemeted in <code>check_coliniarity</code>.  
+In <code>prune_pathpoints</code> the method start with three points near the starting point, and if it is judged to be collinear, delete the second point, make the third point a new second point, and move the third point one point to the goal side. If it is judged not to be collinear, make the second point a new first point, make the third point a new second point, and move the third point one point to the goal side , and repeat this procedure until the third point is reached.
+
+<code>
+
+    def check_coliniarity(x1,x2,x3,y1,y2,y3):
+        det = x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)
+        return det==0
+
+    def prune_pathpoints(path):
+        _path = []
+        _path.append(path[0])
+        ind1 = 0
+        ind2 = 1
+        ind3 = 2
+        while ind3<len(path):
+            (x1,y1) = path[ind1][0],path[ind1][1]
+            (x2,y2) = path[ind2][0],path[ind2][1]
+            (x3,y3) = path[ind3][0],path[ind3][1]
+            colin = check_coliniarity(x1,x2,x3,y1,y2,y3)
+            if colin:
+                ind2 = ind3
+                ind3 += 1
+            else:
+                _path.append(path[ind2])
+                ind1 = ind2
+                ind2 = ind3
+                ind3 += 1
+        _path.append(path[-1])
+        return _path
+         
+</code>
+
+### Execute the flight
+#### 1. Does it work?
+It works!
+
+
+  
+
+
