@@ -128,7 +128,7 @@ class MotionPlanning(Drone):
 
         self.target_position[2] = TARGET_ALTITUDE
 
-        # TODO: read lat0, lon0 from colliders into floating point values
+        # read lat0, lon0 from colliders into floating point values
         def extract_lonlat(filename):
             with open(filename,"r") as f:
                 for row in f:
@@ -140,12 +140,12 @@ class MotionPlanning(Drone):
             return lon,lat
         (lon0,lat0) = extract_lonlat(filename = 'colliders.csv')
         
-        # TODO: set home position to (lon0, lat0, 0)
+        # set home position to (lon0, lat0, 0)
         self.set_home_position(lon0, lat0, 0.0)
 
         # TODO: retrieve current global position
         
-        # TODO: convert to current local position using global_to_local()
+        # convert to current local position using global_to_local()
         _local_position = global_to_local(self.global_position, (lon0,lat0,0.0))
         
         print('global home {0}, position {1}, local position {2}'.format(self.global_home, self.global_position,
@@ -155,28 +155,26 @@ class MotionPlanning(Drone):
     
         # Define a grid for a particular altitude and safety margin around obstacles
         grid, north_offset, east_offset = create_grid(data, TARGET_ALTITUDE, SAFETY_DISTANCE)
-        print(grid.shape,north_offset,east_offset)
 
         print("North offset = {0}, east offset = {1}".format(north_offset, east_offset))
         # Define starting point on the grid (this is just grid center)
-        # TODO: convert start  to current position rather than map center
+        # convert start  to current position rather than map center
         grid_start = (int(_local_position[0]-north_offset), int(_local_position[1]-east_offset))
         # Set goal as some arbitrary position on the grid
         grid_goal = (grid_start[0] + 100,grid_start[1] + 100)
 
         ## Activate this part when you want to specify goal position using latlon.  
+        # If you want to set the goal position to another latlon ,please modify following two lines
         lon_goal = self.global_position[0] + 0.001
         lat_goal = self.global_position[1] + 0.001
-        print(lon_goal,lat_goal,lon0,lat0)
         _grid_goal = global_to_local((lon_goal,lat_goal,TARGET_ALTITUDE),self.global_home)
         grid_goal = ( int(_grid_goal[0]-north_offset) , int(_grid_goal[1]-east_offset) )
         print("grid_goal: {}".format(grid_goal))
-
         while(1):
           if grid[grid_goal[0],grid_goal[1]] == 0:
             break
           else:  
-            grid_goal = (grid_goal[0] + 1 , grid_goal[1] + 1)
+            grid_goal = (grid_goal[0] - 1 , grid_goal[1] - 1)
 	
         # TODO: adapt to set goal as latitude / longitude position and convert
         # Run A* to find a path from start to goal
