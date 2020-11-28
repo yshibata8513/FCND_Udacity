@@ -143,8 +143,6 @@ class MotionPlanning(Drone):
         # set home position to (lon0, lat0, 0)
         self.set_home_position(lon0, lat0, 0.0)
 
-        # TODO: retrieve current global position
-        
         # convert to current local position using global_to_local()
         _local_position = global_to_local(self.global_position, (lon0,lat0,0.0))
         

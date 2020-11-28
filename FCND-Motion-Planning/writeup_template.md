@@ -18,26 +18,26 @@
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
 ---
-### Writeup / README
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  
 
-You're reading it! Below I describe how I addressed each rubric point and where in my code each point is handled.
+ Below I describe how I addressed each rubric point and where in my code each point is handled.
 
 ### Explain the Starter Code
 
 #### 1. Explain the functionality of what's provided in `motion_planning.py` and `planning_utils.py`
-These scripts contain a basic planning implementation that includes...
+<code>motion_planning.py</code>  
+I explain only <code>plan_path()</code>. This function has three roles: first, to read the list of obstacle locations from a csv file and create a grid map; second, to set the start and goal locations; and third, to create a route with the A-star algorithm.
 
-And here's a lovely image of my results (ok this image has nothing to do with it, but it's a nice example of how to include images in your writeup!)
-![Top Down View](./misc/high_up.png)
 
-Here's | A | Snappy | Table
---- | --- | --- | ---
-1 | `highlight` | **bold** | 7.41
-2 | a | b | c
-3 | *italic* | text | 403
-4 | 2 | 3 | abcd
+<code>planning_utils.py</code> consists of following two functions and helper two data structures.I explain two functions as follow.
+
+1. <code>create_grid(data, drone_altitude, safety_distance)</code>  
+This function creates a two-dimensional grid from the given data. The size of the grid is determined by the position of obstacles and safety_distance. The size of each cell in the grid is one meter in height and width. Each cell is assigned a value of 1 if it is within safety_distance of the obstacle, 0 otherwise. The distance from the obstacle is calculated for a given drone_altitude.
+
+2. <code>a_star(grid, h, start, goal)</code>  
+This function implements A* algorithm. In which, the nodes of the graph consist of each cell in the grid, and edges are defined between spatially adjacent cells. The cost of the edges are all set to one. Also, the heuristic function is defined as the linear distance between cell and goal.
+
+
 
 ### Implementing Your Path Planning Algorithm
 
@@ -176,7 +176,7 @@ In <code>prune_pathpoints</code> the method start with three points near the sta
 #### 1. Does it work?
 It works!
 
-### Double check that you've met specifications for each of the [rubric](https://review.udacity.com/#!/rubrics/1534/view) points.
+
   
 
 
