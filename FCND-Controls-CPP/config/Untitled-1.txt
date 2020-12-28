@@ -1,0 +1,39 @@
+
+[QuadControlParams] 
+
+UseIdealEstimator=1
+
+# Physical properties
+Mass = 0.5
+L = 0.17
+Ixx = 0.0023
+Iyy = 0.0023
+Izz = 0.0046
+kappa = 0.016
+minMotorThrust = .1
+maxMotorThrust = 4.5
+
+# Position control gains
+kpPosXY = 20
+kpPosZ = 12
+KiPosZ = 15
+
+# Velocity control gains
+kpVelXY = 9
+kpVelZ = 10
+# Angle control gains
+kpBank = 5
+kpYaw = 1
+
+# Angle rate gains
+#kpPQR = 23, 23, 5
+
+kpPQR = 86.0, 86.0, 10
+# limits
+maxAscentRate = 5
+maxDescentRate = 2
+maxSpeedXY = 5
+maxHorizAccel = 12
+maxTiltAngle = .7
+
+
