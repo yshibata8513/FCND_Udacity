@@ -98,10 +98,10 @@ Second I calculated thrusts of each propeller which generate desired moments and
 My controller was able to pass the test in all scenarios using the same set of parameters .Below are images showing that the drone has passed each test.
 
 #### Senario2
-![senario2](./fig/senario1.png)
+![senario2](https://github.com/yshibata8513/FCND_Udacity/tree/master/FCND-Controls-CPP/fig/senario2.png)
 #### Senario3
-![senario3](./fig/senario1.png)
+![senario3](https://github.com/yshibata8513/FCND_Udacity/tree/master/FCND-Controls-CPP/fig/senario3.png)
 #### Senario4
-![senario4](./fig/senario1.png)
+![senario4](https://github.com/yshibata8513/FCND_Udacity/tree/master/FCND-Controls-CPP/fig/senario4.png)
 #### Senario5
-![senario5](./fig/senario1.png)
+![senario5](https://github.com/yshibata8513/FCND_Udacity/tree/master/FCND-Controls-CPP/fig/senario5.png)
