@@ -100,8 +100,8 @@ My controller was able to pass the test in all scenarios using the same set of p
 #### Senario2
 ![senario2](./fig/senario2.png?raw=true)
 #### Senario3
-![senario3](https://github.com/yshibata8513/FCND_Udacity/tree/master/FCND-Controls-CPP/fig/senario3.png?raw=true)
+![senario3](./fig/senario3.png?raw=true)
 #### Senario4
-![senario4](https://github.com/yshibata8513/FCND_Udacity/tree/master/FCND-Controls-CPP/fig/senario4.png?raw=true)
+![senario4](./fig/senario4.png?raw=true)
 #### Senario5
-![senario5](https://github.com/yshibata8513/FCND_Udacity/tree/master/FCND-Controls-CPP/fig/senario5.png?raw=true)
+![senario5](./fig/senario5.png?raw=true)
