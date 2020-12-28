@@ -62,15 +62,13 @@ thrust = -mass*accelZBody;
 
 ### Implement lateral position control in C++.
 I implemented lateral position contorller in <code>LateralPositionControl</code>.
-I calculated desired acceleration as the sum of the feedforward term and feedback(PD) terms.In the middle of the calculation, the absolute values of target velocity and target acceleration are limited by the maximum and minimum values.
+I calculated desired acceleration as the sum of the feedforward term and feedback(PD) terms.In the middle of the calculation, the absolute values of target velocity and target acceleration are limited by prespecified Maximum/Minimum values.
 
 
 ### Implement yaw control in C++.
 I implemented lateral position contorller in <code>YawControl</code>.I implemented a simple propotional controller.
 
 ### Implement calculating the motor commands given commanded thrust and moments in C++.
-
-The thrust and moments should be converted to the appropriate 4 different desired thrust forces for the moments. Ensure that the dimensions of the drone are properly accounted for when calculating thrust from moments.
 
 I implemented the function calculating the motor commands given commanded thrust and moments in <code>GenerateMotorCommands</code>.
 First I transformed desired moments to forces using the dimensions of the drone.
