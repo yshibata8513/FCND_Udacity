@@ -104,8 +104,13 @@ I implemented update step with respect to magnetometer observation in <code>Upda
 ```
 
 ### Meet the performance criteria of each step.
-My estimator was able to successfully meet the performance criteria with the controller provided.
+My estimator was able to successfully meet the performance criteria with the controller provided.Following are snapshot of selected Senarios.  
 
+#### Senario6:
+![senario6](./images/senario6_sensor_noise.png?raw=true)
+
+#### Senario11:
+![senario11](./images/senario11_given_controller.png?raw=true)
 
 ### De-tune your controller to successfully fly the final desired box trajectory with your estimator and realistic sensors.
 My controller and estimator was able to pass the test in the last scenarios.Here I have not needed to detune parameters of controller though a small amount of fluctuation occured.
